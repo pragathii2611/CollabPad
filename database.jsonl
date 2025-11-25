@@ -1,0 +1,63 @@
+{"op":"delete","id":"5@584368"}
+{"op":"delete","id":"21@571409"}
+{"op":"delete","id":"26@584368"}
+{"op":"insert","charObj":{"char":"e","id":"27@584368","origin":null,"tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"28@584368","origin":"27@584368","tombstone":false}}
+{"op":"insert","charObj":{"char":"d","id":"29@584368","origin":"28@584368","tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"30@584368","origin":"29@584368","tombstone":false}}
+{"op":"insert","charObj":{"char":"d","id":"31@584368","origin":"30@584368","tombstone":false}}
+{"op":"insert","charObj":{"char":"s","id":"32@584368","origin":"31@584368","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"1@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"\n","id":"2@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"d","id":"3@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"4@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"k","id":"5@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"d","id":"6@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"7@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"v","id":"8@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"9@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"f","id":"10@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"11@120985","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"1@744921","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"2@744921","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"3@744921","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":".","id":"4@744921","origin":"10@120985","tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"5@744921","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"f","id":"6@744921","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"f","id":"1@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"d","id":"2@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"3@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"v","id":"4@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"\n","id":"5@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"d","id":"6@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"k","id":"7@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"m","id":"8@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"9@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"d","id":"10@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"11@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"12@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"13@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":".","id":"14@943451","origin":"4@744921","tombstone":false}}
+{"op":"insert","charObj":{"char":"d","id":"15@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"16@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"\n","id":"17@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"\n","id":"18@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"19@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"20@943451","origin":"17@555094","tombstone":false}}
+{"op":"delete","id":"27@584368"}
+{"op":"delete","id":"28@584368"}
+{"op":"insert","charObj":{"char":"f","id":"21@943451","origin":null,"tombstone":false}}
+{"op":"insert","charObj":{"char":"v","id":"22@943451","origin":"21@943451","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"23@943451","origin":"22@943451","tombstone":false}}
+{"op":"delete","id":"21@943451"}
+{"op":"insert","charObj":{"char":"f","id":"7@744921","origin":null,"tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"8@744921","origin":"7@744921","tombstone":false}}
+{"op":"delete","id":"7@744921"}
+{"op":"insert","charObj":{"char":" ","id":"9@744921","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"m","id":"10@744921","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"c","id":"11@744921","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"12@744921","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"\n","id":"24@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":" ","id":"25@943451","origin":"17@555094","tombstone":false}}
+{"op":"insert","charObj":{"char":"f","id":"26@943451","origin":"17@555094","tombstone":false}}
+{"op":"delete","id":"8@744921"}

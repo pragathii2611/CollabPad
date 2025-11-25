@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CollabPad.exe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <style>
+        /* RETRO THEME CSS */
+        :root { --win-teal: #008080; --win-gray: #c0c0c0; --win-blue: #000080; --win-text: #000000; --win-light: #ffffff; --win-shadow: #808080; --win-dark: #000000; }
+        body { margin: 0; padding: 0; background-color: var(--win-teal); font-family: 'Courier Prime', monospace; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; background-image: radial-gradient(var(--win-light) 1px, transparent 1px); background-size: 20px 20px; }
+        .window { width: 900px; height: 85vh; background: var(--win-gray); border: 2px solid; border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light); box-shadow: 4px 4px 0px rgba(0,0,0,0.5); display: flex; flex-direction: column; padding: 3px; }
+        .title-bar { background: linear-gradient(90deg, var(--win-blue), #1084d0); padding: 4px 8px; display: flex; justify-content: space-between; align-items: center; color: white; font-weight: bold; font-family: sans-serif; letter-spacing: 1px; }
+        .win-btn { background: var(--win-gray); border: 1px solid; border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light); box-shadow: 1px 1px 0px black; padding: 2px 5px; min-width: 20px; text-align: center; font-weight: bold; font-family: sans-serif; font-size: 12px; cursor: pointer; }
+        .win-btn:active { border-color: var(--win-dark) var(--win-light) var(--win-light) var(--win-dark); box-shadow: none; transform: translate(1px, 1px); }
+        .menu-bar { display: flex; gap: 15px; padding: 5px 10px; border-bottom: 1px solid var(--win-shadow); margin-bottom: 5px; font-family: sans-serif; font-size: 14px; }
+        .toolbar { display: flex; gap: 10px; padding: 5px 10px; border-bottom: 1px solid var(--win-shadow); align-items: center; }
+        .tool-input { background: white; border: 2px solid; border-color: var(--win-shadow) var(--win-light) var(--win-light) var(--win-shadow); padding: 4px; font-family: 'Courier Prime', monospace; width: 200px; font-size: 14px; }
+        .editor-container { flex-grow: 1; margin: 10px; position: relative; background: white; border: 2px solid; border-color: var(--win-shadow) var(--win-light) var(--win-light) var(--win-shadow); overflow: hidden; cursor: text; }
+        #cursor-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        #editor { width: 100%; height: 100%; border: none; outline: none; padding: 10px; font-family: 'Courier Prime', monospace; font-size: 16px; line-height: 24px; resize: none; white-space: pre-wrap; word-wrap: break-word; background: transparent; z-index: 2; position: relative; color: black; }
+        .remote-cursor { position: absolute; width: 2px; height: 24px; background: blue; }
+        .flag { position: absolute; top: -16px; left: 0; background: var(--win-gray); border: 1px solid black; font-size: 10px; color: black; padding: 1px 4px; white-space: nowrap; font-family: sans-serif; box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
+        .status-bar { border-top: 1px solid var(--win-shadow); padding: 4px 10px; font-family: sans-serif; font-size: 12px; display: flex; justify-content: space-between; background: var(--win-gray); box-shadow: inset 1px 1px 0px var(--win-light); }
+        .status-panel { border: 1px solid; border-color: var(--win-shadow) var(--win-light) var(--win-light) var(--win-shadow); padding: 2px 8px; min-width: 100px; }
+    </style>
+</head>
+<body>
+
+<div class="window">
+    <div class="title-bar">
+        <div style="display:flex; gap:8px;"><span class="material-icons" style="font-size: 16px;">edit_note</span> CollabPad.exe</div>
+        <div style="display:flex; gap:4px;">
+            <button class="win-btn">_</button><button class="win-btn">□</button><button class="win-btn" onclick="window.close()">X</button>
+        </div>
+    </div>
+    <div class="menu-bar"><span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>S</u>earch</span><span><u>H</u>elp</span></div>
+    <div class="toolbar">
+        <span style="font-family: sans-serif; font-size:12px;">Filename:</span>
+        <input type="text" id="doc-title" class="tool-input" value="Untitled.txt">
+        <div style="flex-grow:1"></div>
+        <button class="win-btn" onclick="downloadTxt()">SAVE</button>
+        <button class="win-btn" onclick="copyToClipboard()">COPY</button>
+        <button class="win-btn" onclick="clearDoc()">CLEAR</button>
+    </div>
+    <div class="editor-container">
+        <div id="cursor-layer"></div>
+        <textarea id="editor" spellcheck="false"></textarea>
+    </div>
+    <div class="status-bar">
+        <div class="status-panel" id="status-badge">Initializing...</div>
+        <div class="status-panel" id="char-count">0 chars</div>
+        <div class="status-panel" id="word-count">0 words</div>
+    </div>
+</div>
+
+<script>
+    // --- 1. CRDT LOGIC CLASS (The "Brain") ---
+    class CRDTManager {
+        constructor() { this.siteId = null; this.counter = 0; this.state = []; }
+        init(siteId, initialState = []) { this.siteId = siteId; this.state = initialState; }
+        generateId() { this.counter++; return `${this.counter}@${this.siteId}`; }
+        
+        findRealIndex(visualIndex) {
+            let seen = 0;
+            for (let i = 0; i < this.state.length; i++) {
+                if (!this.state[i].tombstone) {
+                    if (seen === visualIndex) return i;
+                    seen++;
+                }
+            }
+            return -1;
+        }
+
+        handleLocalInsert(char, visualIndex) {
+            let origin = null;
+            if (visualIndex > 0) {
+                const realPrevIndex = this.findRealIndex(visualIndex - 1);
+                if (realPrevIndex !== -1) origin = this.state[realPrevIndex].id;
+            }
+            const charObj = { char, id: this.generateId(), origin, tombstone: false };
+            this.integrateInsert(charObj);
+            return charObj;
+        }
+
+        handleLocalDelete(visualIndex) {
+            const realIndex = this.findRealIndex(visualIndex);
+            if (realIndex !== -1 && this.state[realIndex]) {
+                const charObj = this.state[realIndex];
+                charObj.tombstone = true;
+                return charObj.id;
+            }
+            return null;
+        }
+
+        integrateInsert(charObj) {
+            let destIdx = -1;
+            if (charObj.origin) destIdx = this.state.findIndex(c => c.id === charObj.origin);
+            let finalIdx = destIdx + 1;
+            while (finalIdx < this.state.length) {
+                const next = this.state[finalIdx];
+                if (next.origin !== charObj.origin) break;
+                if (next.id < charObj.id) break;
+                finalIdx++;
+            }
+            this.state.splice(finalIdx, 0, charObj);
+        }
+
+        integrateDelete(id) {
+            const target = this.state.find(c => c.id === id);
+            if (target) target.tombstone = true;
+        }
+
+        getText() { return this.state.filter(c => !c.tombstone).map(c => c.char).join(''); }
+    }
+
+    // --- 2. CLIENT CONTROLLER ---
+    const crdt = new CRDTManager();
+    const editor = document.getElementById('editor');
+    const titleInput = document.getElementById('doc-title');
+    const statusBadge = document.getElementById('status-badge');
+    const charCountEl = document.getElementById('char-count');
+    const wordCountEl = document.getElementById('word-count');
+    const cursorLayer = document.getElementById('cursor-layer');
+
+    // Network Setup
+    let wsUrl = 'ws://localhost:8080';
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${protocol}//${window.location.host}`;
+    }
+    const ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => { statusBadge.innerText = "Connected"; };
+    ws.onclose = () => { statusBadge.innerText = "Disconnected"; };
+
+    ws.onmessage = async (event) => {
+        let textData = event.data instanceof Blob ? await event.data.text() : event.data;
+        const msg = JSON.parse(textData);
+
+        if (msg.type === 'init') {
+            if (msg.self) { crdt.init(msg.self.userId, []); }
+            if (msg.title) titleInput.value = msg.title;
+            if (msg.snapshot) crdt.state = msg.snapshot;
+            if (msg.history) msg.history.forEach(op => applyRemoteOp(op));
+            render();
+        } 
+        else if (msg.type === 'operation') { applyRemoteOp(msg.data); render(); } 
+        else if (msg.type === 'cursor') { renderRemoteCursor(msg); }
+        else if (msg.type === 'title') { titleInput.value = msg.title; }
+    };
+
+    function applyRemoteOp(data) {
+        if (data.op === 'insert') {
+            if (!crdt.state.find(c => c.id === data.charObj.id)) crdt.integrateInsert(data.charObj);
+        } else if (data.op === 'delete') crdt.integrateDelete(data.id);
+    }
+
+    // Input Handling
+    let lastValue = "";
+    editor.addEventListener('input', (e) => {
+        const newValue = e.target.value;
+        if (newValue.length > lastValue.length) {
+            let i = 0; while (i < lastValue.length && lastValue[i] === newValue[i]) i++;
+            const char = newValue[i];
+            const op = crdt.handleLocalInsert(char, i);
+            ws.send(JSON.stringify({ type: 'operation', data: { op: 'insert', charObj: op } }));
+        } else if (newValue.length < lastValue.length) {
+            let i = 0; while (i < newValue.length && newValue[i] === lastValue[i]) i++;
+            const id = crdt.handleLocalDelete(i);
+            if (id) ws.send(JSON.stringify({ type: 'operation', data: { op: 'delete', id: id } }));
+        }
+        lastValue = newValue;
+        updateStats(newValue);
+    });
+
+    function render() {
+        const text = crdt.getText();
+        if (editor.value !== text) {
+            const saveCursor = editor.selectionStart;
+            editor.value = text;
+            editor.setSelectionRange(saveCursor, saveCursor);
+            lastValue = text;
+        }
+        updateStats(text);
+    }
+
+    // UI Helpers
+    titleInput.addEventListener('input', () => { if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'title', title: titleInput.value })); });
+    ['keyup', 'click', 'input'].forEach(evt => { editor.addEventListener(evt, () => { if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'cursor', index: editor.selectionStart })); }); });
+
+    function updateStats(text) { charCountEl.innerText = `${text.length} chars`; wordCountEl.innerText = `${text.trim().split(/\s+/).filter(w=>w.length>0).length} words`; }
+    function downloadTxt() { const blob = new Blob([editor.value], { type: "text/plain" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = titleInput.value + ".txt"; a.click(); }
+    function copyToClipboard() { editor.select(); document.execCommand('copy'); }
+    function clearDoc() { if(confirm("Clear Document?")) location.reload(); }
+
+    // Cursor Math (Courier Prime 16px)
+    let CHAR_WIDTH = 0; const LINE_HEIGHT = 24; 
+    const canvas = document.createElement("canvas"); const ctx = canvas.getContext("2d"); ctx.font = "16px 'Courier Prime'"; CHAR_WIDTH = ctx.measureText("M").width;
+
+    function renderRemoteCursor(msg) {
+        const existing = document.getElementById(`cursor-${msg.userId}`);
+        if (existing) existing.remove();
+        const index = Math.min(msg.index, editor.value.length);
+        const textUpToCursor = editor.value.substring(0, index);
+        const lines = textUpToCursor.split('\n');
+        const row = lines.length - 1;
+        const col = lines[lines.length - 1].length;
+        const top = row * LINE_HEIGHT;
+        const left = col * CHAR_WIDTH;
+        const cursor = document.createElement('div');
+        cursor.id = `cursor-${msg.userId}`;
+        cursor.className = 'remote-cursor';
+        cursor.style.top = `${top}px`;
+        cursor.style.left = `${left}px`;
+        const flag = document.createElement('div');
+        flag.className = 'flag';
+        flag.innerText = `User ${msg.userId}`;
+        cursor.appendChild(flag);
+        cursorLayer.appendChild(cursor);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+/* ... Keep your existing body/page styles ... */
+
+    /* DROPDOWN MENU STYLES */
+    .menubar { display: flex; gap: 15px; font-size: 13px; margin-top: 4px; position: relative; }
+    
+    .menu-item { position: relative; cursor: pointer; padding: 4px 8px; border-radius: 4px; color: #5f6368; user-select: none; }
+    .menu-item:hover { background-color: #eee; color: #202124; }
+
+    .dropdown-content {
+        display: none; position: absolute; top: 100%; left: 0;
+        background-color: white; min-width: 200px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        border-radius: 4px; z-index: 100; padding: 5px 0;
+        border: 1px solid #dadce0;
+    }
+    
+    .dropdown-content div {
+        padding: 8px 20px; color: #202124; cursor: pointer; display: flex; justify-content: space-between;
+    }
+    .dropdown-content div:hover { background-color: #f1f3f4; }
+    .dropdown-content .shortcut { color: #9aa0a6; font-size: 11px; }
+
+    /* Class to show dropdown */
+    .show { display: block; }
+
+    /* DARK MODE OVERRIDES */
+    body.dark-mode { background-color: #202124; }
+    body.dark-mode header, body.dark-mode .page { background-color: #303134; color: white; }
+    body.dark-mode #editor { color: #e8eaed; }
+    body.dark-mode .toolbar { background-color: #303134; border-color: #5f6368; }
+    body.dark-mode .tool-btn { color: #e8eaed; }
+    body.dark-mode .tool-btn:hover { background-color: #5f6368; }
+    body.dark-mode #doc-title { color: white; background: #303134; }
+    body.dark-mode .menu-item { color: #e8eaed; }
+    body.dark-mode .dropdown-content { background-color: #303134; border-color: #5f6368; }
+    body.dark-mode .dropdown-content div { color: #e8eaed; }
+    body.dark-mode .dropdown-content div:hover { background-color: #5f6368; }
