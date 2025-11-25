@@ -10,25 +10,53 @@
         /* RETRO THEME CSS */
         :root { --win-teal: #008080; --win-gray: #c0c0c0; --win-blue: #000080; --win-text: #000000; --win-light: #ffffff; --win-shadow: #808080; --win-dark: #000000; }
         body { margin: 0; padding: 0; background-color: var(--win-teal); font-family: 'Courier Prime', monospace; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; background-image: radial-gradient(var(--win-light) 1px, transparent 1px); background-size: 20px 20px; }
-        .window { width: 900px; height: 85vh; background: var(--win-gray); border: 2px solid; border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light); box-shadow: 4px 4px 0px rgba(0,0,0,0.5); display: flex; flex-direction: column; padding: 3px; }
+        
+        /* COMMON WINDOW STYLES */
+        .window { background: var(--win-gray); border: 2px solid; border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light); box-shadow: 4px 4px 0px rgba(0,0,0,0.5); display: flex; flex-direction: column; padding: 3px; }
         .title-bar { background: linear-gradient(90deg, var(--win-blue), #1084d0); padding: 4px 8px; display: flex; justify-content: space-between; align-items: center; color: white; font-weight: bold; font-family: sans-serif; letter-spacing: 1px; }
-        .win-btn { background: var(--win-gray); border: 1px solid; border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light); box-shadow: 1px 1px 0px black; padding: 2px 5px; min-width: 20px; text-align: center; font-weight: bold; font-family: sans-serif; font-size: 12px; cursor: pointer; }
+        .win-btn { background: var(--win-gray); border: 1px solid; border-color: var(--win-light) var(--win-dark) var(--win-dark) var(--win-light); box-shadow: 1px 1px 0px black; padding: 2px 10px; text-align: center; font-weight: bold; font-family: sans-serif; font-size: 12px; cursor: pointer; }
         .win-btn:active { border-color: var(--win-dark) var(--win-light) var(--win-light) var(--win-dark); box-shadow: none; transform: translate(1px, 1px); }
+
+        /* MAIN APP WINDOW */
+        .app-window { width: 900px; height: 85vh; }
         .menu-bar { display: flex; gap: 15px; padding: 5px 10px; border-bottom: 1px solid var(--win-shadow); margin-bottom: 5px; font-family: sans-serif; font-size: 14px; }
         .toolbar { display: flex; gap: 10px; padding: 5px 10px; border-bottom: 1px solid var(--win-shadow); align-items: center; }
         .tool-input { background: white; border: 2px solid; border-color: var(--win-shadow) var(--win-light) var(--win-light) var(--win-shadow); padding: 4px; font-family: 'Courier Prime', monospace; width: 200px; font-size: 14px; }
         .editor-container { flex-grow: 1; margin: 10px; position: relative; background: white; border: 2px solid; border-color: var(--win-shadow) var(--win-light) var(--win-light) var(--win-shadow); overflow: hidden; cursor: text; }
         #cursor-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         #editor { width: 100%; height: 100%; border: none; outline: none; padding: 10px; font-family: 'Courier Prime', monospace; font-size: 16px; line-height: 24px; resize: none; white-space: pre-wrap; word-wrap: break-word; background: transparent; z-index: 2; position: relative; color: black; }
-        .remote-cursor { position: absolute; width: 2px; height: 24px; background: blue; }
-        .flag { position: absolute; top: -16px; left: 0; background: var(--win-gray); border: 1px solid black; font-size: 10px; color: black; padding: 1px 4px; white-space: nowrap; font-family: sans-serif; box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
         .status-bar { border-top: 1px solid var(--win-shadow); padding: 4px 10px; font-family: sans-serif; font-size: 12px; display: flex; justify-content: space-between; background: var(--win-gray); box-shadow: inset 1px 1px 0px var(--win-light); }
         .status-panel { border: 1px solid; border-color: var(--win-shadow) var(--win-light) var(--win-light) var(--win-shadow); padding: 2px 8px; min-width: 100px; }
+
+        /* CURSORS */
+        .remote-cursor { position: absolute; width: 2px; height: 24px; background: blue; }
+        .flag { position: absolute; top: -18px; left: 0; background: var(--win-gray); border: 1px solid black; font-size: 10px; color: black; padding: 2px 4px; white-space: nowrap; font-family: sans-serif; box-shadow: 2px 2px 0px rgba(0,0,0,0.2); font-weight: bold; }
+
+        /* LOGIN OVERLAY */
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 128, 128, 0.5); z-index: 999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
+        .login-box { width: 300px; padding: 4px; }
+        .login-content { padding: 20px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .login-icon { font-size: 40px; color: var(--win-blue); }
     </style>
 </head>
 <body>
 
-<div class="window">
+<div id="login-overlay">
+    <div class="window login-box">
+        <div class="title-bar">
+            <span>Login.exe</span>
+            <button class="win-btn">X</button>
+        </div>
+        <div class="login-content">
+            <span class="material-icons login-icon">account_circle</span>
+            <div style="font-family: sans-serif; font-size: 12px; text-align: center;">Welcome to CollabPad Network.<br>Please identify yourself.</div>
+            <input type="text" id="username-input" class="tool-input" placeholder="Enter Username..." autofocus>
+            <button class="win-btn" onclick="submitLogin()" style="width: 100%;">CONNECT</button>
+        </div>
+    </div>
+</div>
+
+<div class="window app-window">
     <div class="title-bar">
         <div style="display:flex; gap:8px;"><span class="material-icons" style="font-size: 16px;">edit_note</span> CollabPad.exe</div>
         <div style="display:flex; gap:4px;">
@@ -49,134 +77,131 @@
         <textarea id="editor" spellcheck="false"></textarea>
     </div>
     <div class="status-bar">
-        <div class="status-panel" id="status-badge">Initializing...</div>
+        <div class="status-panel" id="status-badge">Waiting for Login...</div>
         <div class="status-panel" id="char-count">0 chars</div>
-        <div class="status-panel" id="word-count">0 words</div>
     </div>
 </div>
 
 <script>
-    // --- 1. CRDT LOGIC CLASS (The "Brain") ---
-    class CRDTManager {
-        constructor() { this.siteId = null; this.counter = 0; this.state = []; }
-        init(siteId, initialState = []) { this.siteId = siteId; this.state = initialState; }
-        generateId() { this.counter++; return `${this.counter}@${this.siteId}`; }
-        
-        findRealIndex(visualIndex) {
-            let seen = 0;
-            for (let i = 0; i < this.state.length; i++) {
-                if (!this.state[i].tombstone) {
-                    if (seen === visualIndex) return i;
-                    seen++;
-                }
-            }
-            return -1;
-        }
-
-        handleLocalInsert(char, visualIndex) {
-            let origin = null;
-            if (visualIndex > 0) {
-                const realPrevIndex = this.findRealIndex(visualIndex - 1);
-                if (realPrevIndex !== -1) origin = this.state[realPrevIndex].id;
-            }
-            const charObj = { char, id: this.generateId(), origin, tombstone: false };
-            this.integrateInsert(charObj);
-            return charObj;
-        }
-
-        handleLocalDelete(visualIndex) {
-            const realIndex = this.findRealIndex(visualIndex);
-            if (realIndex !== -1 && this.state[realIndex]) {
-                const charObj = this.state[realIndex];
-                charObj.tombstone = true;
-                return charObj.id;
-            }
-            return null;
-        }
-
-        integrateInsert(charObj) {
-            let destIdx = -1;
-            if (charObj.origin) destIdx = this.state.findIndex(c => c.id === charObj.origin);
-            let finalIdx = destIdx + 1;
-            while (finalIdx < this.state.length) {
-                const next = this.state[finalIdx];
-                if (next.origin !== charObj.origin) break;
-                if (next.id < charObj.id) break;
-                finalIdx++;
-            }
-            this.state.splice(finalIdx, 0, charObj);
-        }
-
-        integrateDelete(id) {
-            const target = this.state.find(c => c.id === id);
-            if (target) target.tombstone = true;
-        }
-
-        getText() { return this.state.filter(c => !c.tombstone).map(c => c.char).join(''); }
-    }
-
-    // --- 2. CLIENT CONTROLLER ---
-    const crdt = new CRDTManager();
+    // --- SETUP ---
+    let SITE_ID, USER_COLOR;
+    let counter = 0;
+    let crdtState = [];
+    
+    // UI Refs
     const editor = document.getElementById('editor');
     const titleInput = document.getElementById('doc-title');
     const statusBadge = document.getElementById('status-badge');
     const charCountEl = document.getElementById('char-count');
-    const wordCountEl = document.getElementById('word-count');
     const cursorLayer = document.getElementById('cursor-layer');
+    const loginOverlay = document.getElementById('login-overlay');
+    const usernameInput = document.getElementById('username-input');
 
-    // Network Setup
-    let wsUrl = 'ws://localhost:8080';
+    // Network Logic
+    let wsUrl = 'ws://localhost:8080'; 
     if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         wsUrl = `${protocol}//${window.location.host}`;
     }
     const ws = new WebSocket(wsUrl);
 
-    ws.onopen = () => { statusBadge.innerText = "Connected"; };
+    // Font Math
+    let CHAR_WIDTH = 0; const LINE_HEIGHT = 24; 
+    const canvas = document.createElement("canvas"); const ctx = canvas.getContext("2d"); ctx.font = "16px 'Courier Prime'"; CHAR_WIDTH = ctx.measureText("M").width;
+
+    // --- LOGIN LOGIC ---
+    function submitLogin() {
+        const name = usernameInput.value.trim();
+        if (name) {
+            // Send name to server
+            ws.send(JSON.stringify({ type: 'join', name: name }));
+            // Remove overlay
+            loginOverlay.style.display = 'none';
+            statusBadge.innerText = "Logged in as " + name;
+            editor.focus();
+        } else {
+            alert("Please enter a name!");
+        }
+    }
+    // Allow 'Enter' key to login
+    usernameInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') submitLogin();
+    });
+
+    // --- NETWORK HANDLERS ---
+    ws.onopen = () => { statusBadge.innerText = "Connected. Please Login."; };
     ws.onclose = () => { statusBadge.innerText = "Disconnected"; };
 
     ws.onmessage = async (event) => {
         let textData = event.data instanceof Blob ? await event.data.text() : event.data;
         const msg = JSON.parse(textData);
-
+        
         if (msg.type === 'init') {
-            if (msg.self) { crdt.init(msg.self.userId, []); }
-            if (msg.title) titleInput.value = msg.title;
-            if (msg.snapshot) crdt.state = msg.snapshot;
-            if (msg.history) msg.history.forEach(op => applyRemoteOp(op));
-            render();
+            if (msg.self) { SITE_ID = msg.self.userId; USER_COLOR = msg.self.color; }
+            if (msg.title) { titleInput.value = msg.title; } 
+            if (msg.snapshot) crdtState = msg.snapshot;
+            renderText();
         } 
-        else if (msg.type === 'operation') { applyRemoteOp(msg.data); render(); } 
+        else if (msg.type === 'operation') { applyOp(msg.data); renderText(); } 
         else if (msg.type === 'cursor') { renderRemoteCursor(msg); }
         else if (msg.type === 'title') { titleInput.value = msg.title; }
     };
 
-    function applyRemoteOp(data) {
-        if (data.op === 'insert') {
-            if (!crdt.state.find(c => c.id === data.charObj.id)) crdt.integrateInsert(data.charObj);
-        } else if (data.op === 'delete') crdt.integrateDelete(data.id);
-    }
-
-    // Input Handling
-    let lastValue = "";
-    editor.addEventListener('input', (e) => {
-        const newValue = e.target.value;
-        if (newValue.length > lastValue.length) {
-            let i = 0; while (i < lastValue.length && lastValue[i] === newValue[i]) i++;
-            const char = newValue[i];
-            const op = crdt.handleLocalInsert(char, i);
-            ws.send(JSON.stringify({ type: 'operation', data: { op: 'insert', charObj: op } }));
-        } else if (newValue.length < lastValue.length) {
-            let i = 0; while (i < newValue.length && newValue[i] === lastValue[i]) i++;
-            const id = crdt.handleLocalDelete(i);
-            if (id) ws.send(JSON.stringify({ type: 'operation', data: { op: 'delete', id: id } }));
+    // --- CRDT LOGIC ---
+    function generateId() { counter++; return `${counter}@${SITE_ID}`; }
+    function findRealIndex(visualIndex) {
+        let seen = 0;
+        for (let i = 0; i < crdtState.length; i++) {
+            if (!crdtState[i].tombstone) {
+                if (seen === visualIndex) return i;
+                seen++;
+            }
         }
-        lastValue = newValue;
-        updateStats(newValue);
-    });
-
-    function render() {
-        const text = crdt.getText();
+        return -1;
+    }
+    function localInsert(char, visualIndex) {
+        let origin = null;
+        if (visualIndex > 0) {
+            const realPrevIndex = findRealIndex(visualIndex - 1);
+            if (realPrevIndex !== -1) origin = crdtState[realPrevIndex].id;
+        }
+        const charObj = { char, id: generateId(), origin, tombstone: false };
+        integrateInsert(charObj);
+        renderText();
+        ws.send(JSON.stringify({ type: 'operation', data: { op: 'insert', charObj } }));
+    }
+    function localDelete(visualIndex) {
+        const realIndex = findRealIndex(visualIndex);
+        if (realIndex !== -1 && crdtState[realIndex]) {
+            const charObj = crdtState[realIndex];
+            charObj.tombstone = true;
+            renderText();
+            ws.send(JSON.stringify({ type: 'operation', data: { op: 'delete', id: charObj.id } }));
+        }
+    }
+    function integrateInsert(charObj) {
+        let destIdx = -1;
+        if (charObj.origin) destIdx = crdtState.findIndex(c => c.id === charObj.origin);
+        let finalIdx = destIdx + 1;
+        while (finalIdx < crdtState.length) {
+            const next = crdtState[finalIdx];
+            if (next.origin !== charObj.origin) break;
+            if (next.id < charObj.id) break;
+            finalIdx++;
+        }
+        crdtState.splice(finalIdx, 0, charObj);
+    }
+    function integrateDelete(id) {
+        const target = crdtState.find(c => c.id === id);
+        if (target) target.tombstone = true;
+    }
+    function applyOp(data) {
+        if (data.op === 'insert') {
+            if (!crdtState.find(c => c.id === data.charObj.id)) integrateInsert(data.charObj);
+        } else if (data.op === 'delete') integrateDelete(data.id);
+    }
+    function renderText() {
+        const text = crdtState.filter(c => !c.tombstone).map(c => c.char).join('');
         if (editor.value !== text) {
             const saveCursor = editor.selectionStart;
             editor.value = text;
@@ -186,18 +211,28 @@
         updateStats(text);
     }
 
-    // UI Helpers
-    titleInput.addEventListener('input', () => { if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'title', title: titleInput.value })); });
+    // --- INPUT ---
+    let lastValue = "";
+    editor.addEventListener('input', (e) => {
+        const newValue = e.target.value;
+        if (newValue.length > lastValue.length) {
+            let i = 0; while (i < lastValue.length && lastValue[i] === newValue[i]) i++;
+            localInsert(newValue[i], i);
+        } else if (newValue.length < lastValue.length) {
+            let i = 0; while (i < newValue.length && newValue[i] === lastValue[i]) i++;
+            localDelete(i);
+        }
+        lastValue = newValue;
+    });
+
+    // --- UI/EVENTS ---
+    titleInput.addEventListener('input', () => { if(ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'title', title: titleInput.value })); });
     ['keyup', 'click', 'input'].forEach(evt => { editor.addEventListener(evt, () => { if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'cursor', index: editor.selectionStart })); }); });
 
-    function updateStats(text) { charCountEl.innerText = `${text.length} chars`; wordCountEl.innerText = `${text.trim().split(/\s+/).filter(w=>w.length>0).length} words`; }
+    function updateStats(text) { charCountEl.innerText = `${text.length} chars`; }
     function downloadTxt() { const blob = new Blob([editor.value], { type: "text/plain" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = titleInput.value + ".txt"; a.click(); }
     function copyToClipboard() { editor.select(); document.execCommand('copy'); }
     function clearDoc() { if(confirm("Clear Document?")) location.reload(); }
-
-    // Cursor Math (Courier Prime 16px)
-    let CHAR_WIDTH = 0; const LINE_HEIGHT = 24; 
-    const canvas = document.createElement("canvas"); const ctx = canvas.getContext("2d"); ctx.font = "16px 'Courier Prime'"; CHAR_WIDTH = ctx.measureText("M").width;
 
     function renderRemoteCursor(msg) {
         const existing = document.getElementById(`cursor-${msg.userId}`);
@@ -212,11 +247,15 @@
         const cursor = document.createElement('div');
         cursor.id = `cursor-${msg.userId}`;
         cursor.className = 'remote-cursor';
+        cursor.style.backgroundColor = msg.color;
         cursor.style.top = `${top}px`;
         cursor.style.left = `${left}px`;
+        
         const flag = document.createElement('div');
         flag.className = 'flag';
-        flag.innerText = `User ${msg.userId}`;
+        // USE THE USERNAME IF AVAILABLE
+        flag.innerText = msg.username || `User ${msg.userId}`;
+        flag.style.backgroundColor = 'var(--win-gray)'; 
         cursor.appendChild(flag);
         cursorLayer.appendChild(cursor);
     }
